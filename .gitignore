@@ -1,3 +1,4 @@
 node_modules
 backend/config/config.env
 backup
+frontend/node_modules
