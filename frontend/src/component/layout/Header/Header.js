@@ -1,10 +1,7 @@
 import React from 'react';
 import {ReactNavbar} from "overlay-navbar"
-import logo from "../../images/logo.jpg"
-import SearchIcon from "../../images/searchIcon.jpg"
-import cartIcon from "../../images/cartIcon.jpg"
-import profileIcon from "../../images/profileIcon.jpg"
-
+import logo from "../../../images/logo.jpg"
+import {MdSearch as SearchIcon, MdPerson as ProfileIcon, MdShoppingCart as CartIcon} from "react-icons/md";
 const options = {
   burgerColorHover: "#eb4034",
   logo,
@@ -36,6 +33,12 @@ const options = {
   searchIconColorHover: "#eb4034",
   cartIconColorHover: "#eb4034",
   cartIconMargin: "1vmax",
+  searchIcon: true,
+  SearchIconElement: SearchIcon,
+  cartIcon: true,
+  CartIconElement: CartIcon,
+  profileIcon: true,
+  ProfileIconElement: ProfileIcon,
 };
 
 function Header() {
