@@ -17,19 +17,19 @@ class ApiFeatures {
     }
 
     filter() {
-        const queryCopy = { ...this.queryStr };
-        const removeFields = ["keyword", "limit", "page"];
-        removeFields.forEach((key) => delete queryCopy[key]);
+    const queryCopy = { ...this.queryStr };
+    const removeFields = ["keyword", "limit", "page"];
+    removeFields.forEach((key) => delete queryCopy[key]);
 
-        // console.log(queryCopy);
+    // console.log("queryCopy before stringify:", queryCopy); // ✅ add this
 
-        let queryStr = JSON.stringify(queryCopy);
-        queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
+    let queryStr = JSON.stringify(queryCopy);
+    queryStr = queryStr.replace(/\b(gt|gte|lt|lte)\b/g, (match) => `$${match}`);
 
-        this.query = this.query.find(JSON.parse(queryStr));
+    // console.log("queryStr after replace:", queryStr); // ✅ add this
 
-        // console.log(queryStr);
-        return this;
+    this.query = this.query.find(JSON.parse(queryStr));
+    return this;
     }
 
     pagination(resPerPage) {

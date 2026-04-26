@@ -1,9 +1,11 @@
 
 const express = require("express");
+const qs = require('qs');
 const app = express();
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middleware/error")
 
+app.set('query parser', (str) => qs.parse(str));
 app.use(express.json())
 app.use(cookieParser());
 // app.use(express.urlencoded({ extended: true }));
