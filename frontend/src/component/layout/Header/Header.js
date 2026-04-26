@@ -3,6 +3,7 @@ import {ReactNavbar} from "overlay-navbar"
 import logo from "../../../images/logo.jpg"
 import {MdSearch as SearchIcon, MdPerson as ProfileIcon, MdShoppingCart as CartIcon} from "react-icons/md";
 const options = {
+    burgerColor: "#eb4034",
   burgerColorHover: "#eb4034",
   logo,
   logoWidth: "20vmax",

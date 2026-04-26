@@ -9,10 +9,16 @@ import {
     PRODUCT_DETAILS_FAILURE,
 } from "../constants/productConstants";
 
-export const getProducts = () => async (dispatch) => {
+export const getProducts = (keyword = "", page = 1, price = [0, 250000], category = "", ratings = 0) => async (dispatch) => {
     try {
         dispatch({ type: ALL_PRODUCTS_REQUEST });
-        const { data } = await axios.get("/api/v1/products");
+        let link = `/api/v1/products?keyword=${keyword}&page=${page}&price[gte]=${price[0]}&price[lte]=${price[1]}&ratings[gte]=${ratings}`;
+        if (category) {
+            
+            link = `/api/v1/products?keyword=${keyword}&page=${page}&price[gte]=${price[0]}&price[lte]=${price[1]}&category=${category}&ratings[gte]=${ratings}`;
+        
+        }
+        const { data } = await axios.get(link);
         dispatch({
             type: ALL_PRODUCTS_SUCCESS,
             payload: data,
