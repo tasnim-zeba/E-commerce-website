@@ -4,10 +4,14 @@ const qs = require('qs');
 const app = express();
 const cookieParser = require("cookie-parser");
 const errorMiddleware = require("./middleware/error")
+const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
 
 app.set('query parser', (str) => qs.parse(str));
 app.use(express.json())
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(fileUpload());
 // app.use(express.urlencoded({ extended: true }));
 
 // app.use((req,res,next)=>{
