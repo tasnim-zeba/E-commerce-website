@@ -23,6 +23,7 @@ import Shipping from './component/Cart/Shipping.js';
 import OrderConfirm from './component/Cart/OrderConfirm.js';
 import OrderSuccess from './component/Cart/OrderSuccess.js';
 import MyOrders from './component/Order/MyOrders.js';
+import OrderDetails from './component/Order/OrderDetails.js';
 
 
 function App() {
@@ -62,7 +63,8 @@ function App() {
             <Route exact path="/order/confirm" element={<OrderConfirm/>} />
             <Route exact path="/success" element={<OrderSuccess/>} />
             <Route exact path="/orders/me" element={<MyOrders/>} />
-            
+            {/* <Route exact path="/orders" element={<AllOrders/>} /> */}
+            <Route exact path="/order/:id" element={<OrderDetails/>} />
         </Route>
         <Route exact path="/password/forgot" element={<ForgotPassword/>} />
       </Routes>
