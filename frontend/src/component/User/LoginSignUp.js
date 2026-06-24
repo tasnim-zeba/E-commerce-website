@@ -15,7 +15,7 @@ const LoginSignUp = () => {
 
     const dispatch = useDispatch();
     const alert = useAlert();
-    const history = useNavigate();
+    const navigate = useNavigate();
 
     const { error,loading, isAuthenticated } = useSelector((state) => state.user);
 
@@ -70,6 +70,8 @@ const LoginSignUp = () => {
         }
     }
 
+    const redirect = window.location.search ? window.location.search.split("=")[1] : "/account";
+
     useEffect(() => {
         if (error) {
             alert.error(error);
@@ -77,9 +79,9 @@ const LoginSignUp = () => {
         } 
         if (isAuthenticated) {
             alert.success("Login Successfully");
-            history("/account");
+            navigate(redirect);
         }  
-    }, [dispatch, error, alert, history, isAuthenticated]);
+    }, [dispatch, error, alert, navigate, isAuthenticated, redirect]);
 
     const switchTabs = (e, tab) => {
         if (tab === "login") {

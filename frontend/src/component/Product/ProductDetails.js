@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import Carousel from 'react-material-ui-carousel';
 import "./ProductDetails.css";
 import {useSelector, useDispatch} from "react-redux";
@@ -10,6 +10,7 @@ import Loader from "../layout/Loader/Loader.js";
 import {useAlert} from "react-alert";
 import { clearErrors } from '../../actions/productAction.js';
 import MetaData from '../layout/MetaData.js';
+import { addItemsToCart } from '../../actions/cartAction.js';
 
 function ProductDetails() {
   const dispatch = useDispatch();
@@ -35,6 +36,31 @@ function ProductDetails() {
         value: product.ratings,
         isHalf: true,
      };
+
+    const [quantity, setQuantity] = useState(1);
+    const [open, setOpen] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState("");
+
+    const increaseQuantity = () => {
+        if (product.Stock <= quantity) return;
+
+        const qty = quantity + 1;
+        setQuantity(qty);
+    };
+
+    const decreaseQuantity = () => {
+        if (1 >= quantity) return;
+
+        const qty = quantity - 1;
+        setQuantity(qty);
+    };
+
+    const addToCartHandler = () => {
+        dispatch(addItemsToCart(id, quantity));
+        alert.success("Item Added To Cart");
+    }
+
   return (
     <>
     {loading ? <Loader /> : <Fragment>
@@ -67,11 +93,11 @@ function ProductDetails() {
                     <h1>{`৳${product.price}`}</h1>
                     <div className="detailsBlock-3-1">
                         <div className="detailsBlock-3-1-1">
-                            <button>-</button>
-                            <input value="1" type="number" />
-                            <button>+</button>
+                            <button onClick={decreaseQuantity}>-</button>
+                            <input readOnly type="number" value={quantity} />
+                            <button onClick={increaseQuantity}>+</button>
                         </div>{""}
-                        <button>Add to Cart</button>
+                        <button onClick={addToCartHandler} >Add to Cart</button>
                         
                     </div>
                     <p>

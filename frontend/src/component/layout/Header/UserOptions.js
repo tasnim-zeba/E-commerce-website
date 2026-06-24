@@ -5,6 +5,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useAlert } from 'react-alert';
@@ -22,7 +23,9 @@ const UserOptions = ({ user }) => {
     const options = [
         { icon: <ListAltIcon />, name: "Orders", func: orders },
         { icon: <PersonIcon />, name: "Profile", func: account },
+        { icon: <ShoppingCartIcon />, name: "Cart", func: cart },
         { icon: <ExitToAppIcon />, name: "Logout", func: logoutUser },
+        
     ];
 
     if (user.role === "admin") {
@@ -34,7 +37,7 @@ const UserOptions = ({ user }) => {
     }
 
     function orders() {
-        navigate("/orders");
+        navigate("/orders/me");
     }
 
     function account() {
@@ -44,6 +47,10 @@ const UserOptions = ({ user }) => {
     function logoutUser() {
         dispatch(logout());
         alert.success("Logged out successfully.");
+    }
+
+    function cart() {
+        navigate("/cart");
     }
 
   return (

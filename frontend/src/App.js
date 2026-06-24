@@ -18,6 +18,11 @@ import ProtectedRoute from './component/Route/ProtectedRoute.js';
 import UpdateProfile from './component/User/UpdateProfile.js';
 import UpdatePassword from './component/User/UpdatePassword.js';
 import ForgotPassword from './component/User/ForgotPassword.js';
+import Cart from './component/Cart/Cart.js';
+import Shipping from './component/Cart/Shipping.js';
+import OrderConfirm from './component/Cart/OrderConfirm.js';
+import OrderSuccess from './component/Cart/OrderSuccess.js';
+import MyOrders from './component/Order/MyOrders.js';
 
 
 function App() {
@@ -48,10 +53,15 @@ function App() {
         <Route path="/products/:keyword" element={<Products/>} />
         <Route exact path="/Search" element={<Search/>} />
         <Route exact path="/login" element={<LoginSignUp/>} />
+        <Route exact path="/Cart" element={<Cart/>} />
         <Route element={<ProtectedRoute />}>
             <Route exact path="/account" element={<Profile/>} />
             <Route exact path="/me/update" element={<UpdateProfile/>} />
             <Route exact path="/password/change" element={<UpdatePassword/>} />
+            <Route exact path="/login/shipping" element={<Shipping/>} />
+            <Route exact path="/order/confirm" element={<OrderConfirm/>} />
+            <Route exact path="/success" element={<OrderSuccess/>} />
+            <Route exact path="/orders/me" element={<MyOrders/>} />
             
         </Route>
         <Route exact path="/password/forgot" element={<ForgotPassword/>} />
