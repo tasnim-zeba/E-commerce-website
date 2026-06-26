@@ -24,6 +24,9 @@ import OrderConfirm from './component/Cart/OrderConfirm.js';
 import OrderSuccess from './component/Cart/OrderSuccess.js';
 import MyOrders from './component/Order/MyOrders.js';
 import OrderDetails from './component/Order/OrderDetails.js';
+import Dashboard from './component/Admin/Dashboard.js';
+import ProductList from './component/Admin/ProductList.js';
+import NewProduct from './component/Admin/NewProduct.js';
 
 
 function App() {
@@ -65,6 +68,12 @@ function App() {
             <Route exact path="/orders/me" element={<MyOrders/>} />
             {/* <Route exact path="/orders" element={<AllOrders/>} /> */}
             <Route exact path="/order/:id" element={<OrderDetails/>} />
+            
+        </Route>
+        <Route element={<ProtectedRoute isAdmin={true} />}>
+            <Route exact path="/admin/dashboard" element={<Dashboard/>} />
+            <Route exact path="/admin/products" element={<ProductList/>} />
+            <Route exact path="/admin/product" element={<NewProduct/>} />
         </Route>
         <Route exact path="/password/forgot" element={<ForgotPassword/>} />
       </Routes>
