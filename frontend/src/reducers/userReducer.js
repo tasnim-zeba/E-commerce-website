@@ -1,12 +1,20 @@
-import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, CLEAR_ERRORS, 
-    REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, 
-    LOAD_USER_REQUEST, LOAD_USER_SUCCESS, LOAD_USER_FAILURE, 
-    LOGOUT_SUCCESS, LOGOUT_FAILURE,
-    UPDATE_PROFILE_REQUEST,
-    UPDATE_PROFILE_SUCCESS,
-    UPDATE_PROFILE_FAIL,
-    UPDATE_PROFILE_RESET,
-    UPDATE_PASSWORD_REQUEST,
+import {
+  LOGIN_REQUEST,
+  LOGIN_FAIL,
+  LOGIN_SUCCESS,
+  REGISTER_USER_REQUEST,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAIL,
+  LOAD_USER_REQUEST,
+  LOAD_USER_SUCCESS,
+  LOAD_USER_FAIL,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAIL,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAIL,
+  UPDATE_PROFILE_RESET,
+  UPDATE_PASSWORD_REQUEST,
   UPDATE_PASSWORD_SUCCESS,
   UPDATE_PASSWORD_RESET,
   UPDATE_PASSWORD_FAIL,
@@ -29,64 +37,75 @@ import { LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE, CLEAR_ERRORS,
   UPDATE_USER_RESET,
   USER_DETAILS_REQUEST,
   USER_DETAILS_SUCCESS,
-  USER_DETAILS_FAIL } from "../constants/userConstants";
+  USER_DETAILS_FAIL,
+  CLEAR_ERRORS,
+} from "../constants/userConstants";
+const initialState = {
+  loading: true,
+  isAuthenticated: false,
+  user: null,
+  error: null,
+};
 
+export const userReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case LOGIN_REQUEST:
+    case REGISTER_USER_REQUEST:
+    case LOAD_USER_REQUEST:
+      return {
+        loading: true,
+        isAuthenticated: false,
+      };
+    case LOGIN_SUCCESS:
+    case REGISTER_USER_SUCCESS:
+    case LOAD_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: true,
+        user: action.payload,
+      };
 
-export const userReducer = (state = { user: {} }, action) => {
-    switch (action.type) {
-        case LOGIN_REQUEST:
-        case REGISTER_REQUEST:
-        case LOAD_USER_REQUEST:
-            return {
-                loading: true,
-                isAuthenticated: false
-            };
-        case LOGIN_SUCCESS:
-        case REGISTER_SUCCESS:
-        case LOAD_USER_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: true,
-                user: action.payload
-            };
-        case LOGOUT_SUCCESS:
-            return {
-                loading: false,
-                isAuthenticated: false,
-                user: null
-            };
-        case LOGIN_FAILURE:
-        case REGISTER_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: false,
-                user: null,
-                error: action.payload
-            };
-        case LOAD_USER_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                isAuthenticated: false,
-                user: null,
-                error: action.payload
-            };
-        case LOGOUT_FAILURE:
-            return {
-                ...state,
-                loading: false,                
-                error: action.payload
-            };
-        case CLEAR_ERRORS:
-            return {
-                ...state,
-                error: null
-            };
-        default:
-            return state;
-    }
+    case LOGOUT_SUCCESS:
+      return {
+        loading: false,
+        user: null,
+        isAuthenticated: false,
+      };
+    case LOGIN_FAIL:
+    case REGISTER_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        isAuthenticated: false,
+        user: null,
+        error: action.payload,
+      };
+
+    case LOAD_USER_FAIL:
+      return {
+        loading: false,
+        isAuthenticated: false,
+        user: null,
+        error: action.payload,
+      };
+
+    case LOGOUT_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
 };
 
 export const profileReducer = (state = {}, action) => {
