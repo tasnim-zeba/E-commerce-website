@@ -2,11 +2,6 @@ import React, { Fragment, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import "./productList.css";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  clearErrors,
-  getAdminProduct,
-  deleteProduct,
-} from "../../actions/productAction";
 import { Link } from "react-router-dom";
 import { useAlert } from "react-alert";
 import { Button } from "@mui/material";
@@ -14,24 +9,26 @@ import MetaData from "../layout/MetaData";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SideBar from "./Sidebar";
-import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
+import { getAllUsers, clearErrors, deleteUser } from "../../actions/userAction";
+import { DELETE_USER_RESET } from "../../constants/userConstants";
 import { useNavigate } from "react-router-dom";
 
-const ProductList = () => {
+const UsersList = () => {
   const dispatch = useDispatch();
     const navigate = useNavigate();
 
   const alert = useAlert();
 
-  const { error, products } = useSelector((state) => state.products);
+  const { error, users } = useSelector((state) => state.allUsers);
 
-  const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.product
-  );
+  const {
+    error: deleteError,
+    isDeleted,
+    message,
+  } = useSelector((state) => state.profile);
 
-  const deleteProductHandler = (id) => {
-    //  console.log("Delete clicked:", id);
-    dispatch(deleteProduct(id));
+  const deleteUserHandler = (id) => {
+    dispatch(deleteUser(id));
   };
 
   useEffect(() => {
@@ -46,37 +43,41 @@ const ProductList = () => {
     }
 
     if (isDeleted) {
-      alert.success("Product Deleted Successfully");
-      navigate("/admin/products");
-      dispatch({ type: DELETE_PRODUCT_RESET });
+      alert.success(message);
+      navigate("/admin/users");
+      dispatch({ type: DELETE_USER_RESET });
     }
 
-    dispatch(getAdminProduct());
-  }, [dispatch, alert, error, deleteError, navigate, isDeleted]);
+    dispatch(getAllUsers());
+  }, [dispatch, alert, error, deleteError, navigate, isDeleted, message]);
 
   const columns = [
-    { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
+    { field: "id", headerName: "User ID", minWidth: 180, flex: 0.8 },
 
     {
-      field: "name",
-      headerName: "Name",
-      minWidth: 350,
+      field: "email",
+      headerName: "Email",
+      minWidth: 200,
       flex: 1,
     },
     {
-      field: "stock",
-      headerName: "Stock",
-      type: "number",
+      field: "name",
+      headerName: "Name",
       minWidth: 150,
-      flex: 0.3,
+      flex: 0.5,
     },
 
     {
-      field: "price",
-      headerName: "Price",
+      field: "role",
+      headerName: "Role",
       type: "number",
-      minWidth: 270,
-      flex: 0.5,
+      minWidth: 150,
+      flex: 0.3,
+      cellClassName: (params) => {
+        return params.row.role === "admin"
+          ? "greenColor"
+          : "redColor";
+      },
     },
 
     {
@@ -89,11 +90,15 @@ const ProductList = () => {
       renderCell: (params) => {
         return (
           <Fragment>
-            <Link to={`/admin/product/${params.row.id}`}>
+            <Link to={`/admin/user/${params.row.id}`}>
               <EditIcon />
             </Link>
 
-            <Button onClick={() => deleteProductHandler(params.row.id)}>
+            <Button
+              onClick={() =>
+                deleteUserHandler(params.row.id)
+              }
+            >
               <DeleteIcon />
             </Button>
           </Fragment>
@@ -104,41 +109,37 @@ const ProductList = () => {
 
   const rows = [];
 
-  products &&
-    products.forEach((item) => {
+  users &&
+    users.forEach((item) => {
       rows.push({
         id: item._id,
-        stock: item.Stock,
-        price: item.price,
+        role: item.role,
+        email: item.email,
         name: item.name,
       });
     });
 
   return (
     <Fragment>
-      <MetaData title={`ALL PRODUCTS - Admin`} />
+      <MetaData title={`ALL USERS - Admin`} />
 
       <div className="dashboard">
         <SideBar />
         <div className="productListContainer">
-          <h1 id="productListHeading">ALL PRODUCTS</h1>
+          <h1 id="productListHeading">ALL USERS</h1>
 
           <DataGrid
             rows={rows}
             columns={columns}
-            initialState={{
-                pagination: {
-                    paginationModel: { pageSize: 10 },
-                },
-            }}
-            pageSizeOptions={[10]}
-            disableRowSelectionOnClick
+            pageSize={10}
+            disableSelectionOnClick
+            className="productListTable"
             autoHeight
-        />
+          />
         </div>
       </div>
     </Fragment>
   );
 };
 
-export default ProductList;
+export default UsersList;

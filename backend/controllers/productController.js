@@ -78,37 +78,74 @@ exports.getProductDetails = catchAsyncErrors(async(req, res, next)=>{
 
 
 //Update product --admin
-exports.updateProduct = catchAsyncErrors(async(req, res, next)=>{
-    let product = Product.findById(req.params.id)
+exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
 
-    // if(!product){
-    //     return res.status(500).json({
-    //         success: false,
-    //         message: "Product not found"
-    //     })
-    // }
-    if(!product){
-        return next(new ErrorHandler("Product not found", 404))
+    let product = await Product.findById(req.params.id);
+
+    if (!product) {
+        return next(new ErrorHandler("Product not found", 404));
     }
-    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-        runValidators:true
-    })
+
+    let images = [];
+
+    if (req.body.images) {
+        if (typeof req.body.images === "string") {
+            images.push(req.body.images);
+        } else {
+            images = req.body.images;
+        }
+    }
+
+    if (images.length > 0) {
+
+        for (let i = 0; i < product.images.length; i++) {
+            await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+        }
+
+        const imagesLinks = [];
+
+        for (let i = 0; i < images.length; i++) {
+            const result = await cloudinary.v2.uploader.upload(images[i], {
+                folder: "products",
+            });
+
+            imagesLinks.push({
+                public_id: result.public_id,
+                url: result.secure_url,
+            });
+        }
+
+        req.body.images = imagesLinks;
+    }
+
+    product = await Product.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        {
+            new: true,
+            runValidators: true,
+        }
+    );
 
     res.status(200).json({
-        success:true,
-        product
-    })
-})
+        success: true,
+        product,
+    });
+});
 
 //Delete product --admin
 exports.deleteProduct = catchAsyncErrors(async(req, res, next)=>{
-    let product = Product.findById(req.params.id)
+    let product = await Product.findById(req.params.id)
 
     if(!product){
         return next(new ErrorHandler("Product not found", 404))
     }
+
+    for(let i = 0; i < product.images.length; i++){
+        await cloudinary.v2.uploader.destroy(product.images[i].public_id)
+    }
     
+
     await product.deleteOne()
 
     res.status(200).json({

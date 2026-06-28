@@ -27,6 +27,12 @@ import OrderDetails from './component/Order/OrderDetails.js';
 import Dashboard from './component/Admin/Dashboard.js';
 import ProductList from './component/Admin/ProductList.js';
 import NewProduct from './component/Admin/NewProduct.js';
+import UpdateProduct from './component/Admin/UpdateProduct.js';
+import OrderList from './component/Admin/OrderList.js';
+import ProcessOrder from './component/Admin/ProcessOrder.js';
+import UsersList from './component/Admin/UsersList.js';
+import UpdateUser from './component/Admin/UpdateUser.js';
+import ProductReviews from './component/Admin/ProductReviews.js';
 
 
 function App() {
@@ -74,6 +80,12 @@ function App() {
             <Route exact path="/admin/dashboard" element={<Dashboard/>} />
             <Route exact path="/admin/products" element={<ProductList/>} />
             <Route exact path="/admin/product" element={<NewProduct/>} />
+            <Route exact path="/admin/product/:id" element={<UpdateProduct/>} />
+            <Route exact path="/admin/orders" element={<OrderList/>} />
+            <Route exact path="/admin/order/:id" element={<ProcessOrder/>} />
+            <Route exact path="/admin/users" element={<UsersList/>} />
+            <Route exact path="/admin/user/:id" element={<UpdateUser/>} />
+            <Route exact path="/admin/reviews" element={<ProductReviews/>} />
         </Route>
         <Route exact path="/password/forgot" element={<ForgotPassword/>} />
       </Routes>
