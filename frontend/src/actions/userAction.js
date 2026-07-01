@@ -35,6 +35,12 @@ import {
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
   CLEAR_ERRORS,
+  ALL_ADMIN_REQUEST,
+  ALL_ADMIN_SUCCESS,
+  ALL_ADMIN_FAIL,
+  SINGLE_ADMIN_REQUEST,
+  SINGLE_ADMIN_SUCCESS,
+  SINGLE_ADMIN_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -240,6 +246,49 @@ export const deleteUser = (id) => async (dispatch) => {
     });
   }
 };
+
+// Get All Admins
+export const getAllAdmins = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: ALL_ADMIN_REQUEST,
+    });
+
+    const { data } = await axios.get("/api/v1/admins");
+
+    dispatch({
+      type: ALL_ADMIN_SUCCESS,
+      payload: data.admins,
+    });
+  } catch (error) {
+    dispatch({
+      type: ALL_ADMIN_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Get Single Admin
+export const getSingleAdmin = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: SINGLE_ADMIN_REQUEST,
+    });
+
+    const { data } = await axios.get(`/api/v1/admin/${id}`);
+
+    dispatch({
+      type: SINGLE_ADMIN_SUCCESS,
+      payload: data.admin,
+    });
+  } catch (error) {
+    dispatch({
+      type: SINGLE_ADMIN_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 
 // Clearing Errors
 export const clearErrors = () => async (dispatch) => {

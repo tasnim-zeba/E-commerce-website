@@ -33,6 +33,8 @@ import ProcessOrder from './component/Admin/ProcessOrder.js';
 import UsersList from './component/Admin/UsersList.js';
 import UpdateUser from './component/Admin/UpdateUser.js';
 import ProductReviews from './component/Admin/ProductReviews.js';
+import Contact from './component/Contact/Contact.js';
+import Chat from './component/Chat/Chat.js';
 
 
 function App() {
@@ -74,7 +76,8 @@ function App() {
             <Route exact path="/orders/me" element={<MyOrders/>} />
             {/* <Route exact path="/orders" element={<AllOrders/>} /> */}
             <Route exact path="/order/:id" element={<OrderDetails/>} />
-            
+            <Route exact path="/contact" element={<Contact/>} />
+            <Route exact path="/chat/:conversationId" element={<Chat/>} />
         </Route>
         <Route element={<ProtectedRoute isAdmin={true} />}>
             <Route exact path="/admin/dashboard" element={<Dashboard/>} />

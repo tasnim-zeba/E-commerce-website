@@ -279,3 +279,35 @@ exports.deleteUser = catchAsyncErrors(async (req, res, next) => {
         message: "User Deleted Successfully",
     });
 });
+
+// Get all admins
+exports.getAllAdmins = catchAsyncErrors(async (req, res, next) => {
+
+    const admins = await User.find({ role: "admin" })
+        .select("name email avatar");
+
+    res.status(200).json({
+        success: true,
+        admins,
+    });
+
+});
+
+// Get Single Admin
+exports.getSingleAdmin = catchAsyncErrors(async (req, res, next) => {
+
+    const admin = await User.findOne({
+        _id: req.params.id,
+        role: "admin",
+    }).select("name email avatar");
+
+    if (!admin) {
+        return next(new ErrorHandler("Admin not found", 404));
+    }
+
+    res.status(200).json({
+        success: true,
+        admin,
+    });
+
+});

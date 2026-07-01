@@ -39,6 +39,12 @@ import {
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
   CLEAR_ERRORS,
+  ALL_ADMIN_REQUEST,
+  ALL_ADMIN_SUCCESS,
+  ALL_ADMIN_FAIL,
+  SINGLE_ADMIN_REQUEST,
+  SINGLE_ADMIN_SUCCESS,
+  SINGLE_ADMIN_FAIL,
 } from "../constants/userConstants";
 const initialState = {
   loading: true,
@@ -271,6 +277,72 @@ export const userDetailsReducer = (state = { user: {} }, action) => {
         error: null,
       };
 
+    default:
+      return state;
+  }
+};
+
+export const allAdminsReducer = (
+  state = { admins: [] },
+  action
+) => {
+  switch (action.type) {
+    case ALL_ADMIN_REQUEST:
+      return {
+        loading: true,
+        admins: [],
+      };
+
+    case ALL_ADMIN_SUCCESS:
+      return {
+        loading: false,
+        admins: action.payload,
+      };
+
+    case ALL_ADMIN_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+export const singleAdminReducer = (
+  state = { admin: {} },
+  action
+) => {
+  switch (action.type) {
+    case SINGLE_ADMIN_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case SINGLE_ADMIN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        admin: action.payload,
+      };
+    case SINGLE_ADMIN_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
     default:
       return state;
   }

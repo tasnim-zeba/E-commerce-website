@@ -16,6 +16,8 @@ import {
   profileReducer,
   userDetailsReducer,
   userReducer,
+  allAdminsReducer,
+  singleAdminReducer
 } from "./reducers/userReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import {
@@ -46,6 +48,8 @@ const reducer = combineReducers({
   userDetails: userDetailsReducer,
   productReviews: productReviewsReducer,
   review: reviewReducer,
+  allAdmins: allAdminsReducer,
+  singleAdmin: singleAdminReducer,
 });
 
 let initialState = {
