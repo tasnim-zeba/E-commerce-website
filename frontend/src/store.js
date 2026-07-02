@@ -27,6 +27,11 @@ import {
   orderDetailsReducer,
   orderReducer,
 } from "./reducers/orderReducer";
+import { conversationReducer, conversationDetailsReducer, } from "./reducers/conversationReducer";
+import {
+    messagesReducer,
+    newMessageReducer,
+} from "./reducers/messageReducer";
 
 
 const reducer = combineReducers({
@@ -50,6 +55,10 @@ const reducer = combineReducers({
   review: reviewReducer,
   allAdmins: allAdminsReducer,
   singleAdmin: singleAdminReducer,
+  conversation: conversationReducer,
+  conversationDetails: conversationDetailsReducer,
+  messages: messagesReducer,
+  newMessage: newMessageReducer,
 });
 
 let initialState = {
@@ -68,7 +77,8 @@ const middleware = [thunk];
 const store = createStore(
     reducer,
     initialState,
-    composeWithDevTools(applyMiddleware(...middleware))
+    // composeWithDevTools(applyMiddleware(...middleware))
+    applyMiddleware(...middleware)
 );
 
 export default store;

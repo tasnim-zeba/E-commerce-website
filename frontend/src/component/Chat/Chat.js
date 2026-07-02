@@ -2,54 +2,128 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getSingleAdmin } from "../../actions/userAction";
+import { getConversation } from "../../actions/conversationAction";
+import {
+    getMessages,
+    sendMessage,
+} from "../../actions/messageAction";
+import { SEND_MESSAGE_RESET } from "../../constants/messageConstants";
+import { useRef } from "react";
 import "./Chat.css";
+import socket from "../../socket";
 
 const Chat = () => {
   const [message, setMessage] = useState("");
- 
+  const [chatMessages, setChatMessages] = useState([]);
+  const chatBodyRef = useRef(null);
+  const { conversationId } = useParams();
 
-  const messages = [
-    {
-      id: 1,
-      sender: "admin",
-      text: "Hello! How can I help you today?",
-    },
-    {
-      id: 2,
-      sender: "user",
-      text: "I want to know the status of my order.",
-    },
-    {
-      id: 3,
-      sender: "admin",
-      text: "Sure! Can you provide your Order ID?",
-    },
-  ];
+    const dispatch = useDispatch();
 
-  const sendMessage = (e) => {
+  
+  const { messages } = useSelector(
+    (state) => state.messages
+    );
+
+    const {
+    success,
+    // message: sentMessage,
+} = useSelector((state) => state.newMessage);
+
+    const { user } = useSelector(
+        (state) => state.user
+    );
+
+    const {
+        conversation,
+    } = useSelector((state) => state.conversationDetails);
+    
+    const otherUser =
+        conversation &&
+        (user._id === conversation.admin?._id
+            ? conversation.customer
+            : conversation.admin);
+  
+  const sendMessageHandler = (e) => {
     e.preventDefault();
 
     if (!message.trim()) return;
 
-    console.log(message);
+    const receiverId =
+    user._id === conversation.admin._id
+        ? conversation.customer._id
+        : conversation.admin._id;
+    
+
+    dispatch(
+        sendMessage({
+            conversationId,
+            receiverId,
+            message,
+        })
+    );
 
     setMessage("");
   };
 
-    const { conversationId } = useParams();
-
-    const dispatch = useDispatch();
-
-    const { admin, loading } = useSelector(
-        (state) => state.singleAdmin
-    );
+    
+    
+    
 
     useEffect(() => {
 
-        dispatch(getSingleAdmin(conversationId));
+        dispatch(getConversation(conversationId));
+        dispatch(getMessages(conversationId));
 
     }, [dispatch, conversationId]);
+
+    useEffect(() => {
+    if (messages) {
+        setChatMessages(messages);
+    }
+}, [messages]);
+
+    
+
+    useEffect(() => {
+
+        if (chatBodyRef.current) {
+
+            chatBodyRef.current.scrollTop =
+                chatBodyRef.current.scrollHeight;
+
+        }
+
+    }, [chatMessages]);
+
+    useEffect(() => {
+
+        socket.on("receiveMessage", (newMessage) => {
+
+            setChatMessages((prev) => [...prev, newMessage]);
+
+        });
+
+        return () => {
+
+            socket.off("receiveMessage");
+
+        };
+
+    }, []);
+
+
+    useEffect(() => {
+
+      if (success) {
+
+          dispatch({
+              type: SEND_MESSAGE_RESET,
+          });
+
+      }
+
+  }, [success, dispatch]);
 
   return (
     
@@ -57,41 +131,44 @@ const Chat = () => {
 
       <div className="chatHeader">
             <div className="chatAvatar">
-            {admin?.avatar?.url ? (
-                <img
-                    src={admin.avatar.url}
-                    alt={admin.name}
-                    className="adminAvatarImg"
-                />
-            ) : (
-                "👤"
-            )}
-        </div>
+                {otherUser?.avatar?.url ? (
+                    <img
+                        src={otherUser.avatar.url}
+                        alt={otherUser.name}
+                        className="chatAvatarImg"
+                    />
+                ) : (
+                    "👤"
+                )}
+            </div>
 
-        <div>
-          <h3>{loading ? "Loading..." : admin?.name}</h3>
-          <span>Online</span>
-        </div>
+            <div>
+                <h3>{otherUser?.name}</h3>
+                <span>Online</span>
+            </div>
       </div>
 
-      <div className="chatBody">
+      <div className="chatBody" ref={chatBodyRef}>
 
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`message ${
-              msg.sender === "user"
-                ? "userMessage"
-                : "adminMessage"
-            }`}
-          >
-            {msg.text}
-          </div>
+        {chatMessages &&
+            chatMessages.map((msg) => (
+
+                <div
+                    key={msg._id}
+                    className={
+                        msg.sender._id === user._id
+                            ? "message userMessage"
+                            : "message adminMessage"
+                    }
+                >
+                    {msg.message}
+                </div>
+
         ))}
 
       </div>
 
-      <form className="chatFooter" onSubmit={sendMessage}>
+      <form className="chatFooter" onSubmit={sendMessageHandler}>
 
         <input
           type="text"

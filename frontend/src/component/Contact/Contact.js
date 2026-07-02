@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getAllAdmins } from "../../actions/userAction";
 import { useNavigate } from "react-router-dom";
+import { createConversation } from "../../actions/conversationAction";
+import { CREATE_CONVERSATION_RESET } from "../../constants/conversationConstants";
 import "./Contact.css";
 
 
@@ -14,16 +16,31 @@ const Contact = () => {
     const { admins, loading, error } = useSelector(
         (state) => state.allAdmins
     );
+    const { conversation} = useSelector(
+        (state) => state.conversation
+    );
 
-    const messageAdminHandler = (adminId) => {
+   const messageAdminHandler = (adminId) => {
 
-        // Temporary
-        navigate(`/chat/${adminId}`);
+        dispatch(createConversation(adminId));
 
     };
     useEffect(() => {
         dispatch(getAllAdmins());
     }, [dispatch]);
+    useEffect(() => {
+
+       if (conversation?._id) {
+
+        navigate(`/chat/${conversation._id}`);
+
+        dispatch({
+            type: CREATE_CONVERSATION_RESET,
+        });
+
+    }
+
+    }, [conversation?._id, navigate, dispatch]);
   return (
     <div className="contactContainer">
       <div className="contactHeader">

@@ -1,3 +1,4 @@
+import socket from "./socket";
 import './App.css';
 import Header from './component/layout/Header/Header.js';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -53,6 +54,31 @@ function App() {
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
+
+  useEffect(() => {
+
+    if (isAuthenticated && user) {
+
+        socket.connect();
+
+        socket.on("connect", () => {
+
+            console.log("Connected:", socket.id);
+
+            socket.emit("join", user._id);
+
+        });
+
+    }
+
+    return () => {
+
+        socket.off("connect");
+        socket.disconnect();
+
+    };
+
+}, [isAuthenticated, user]);
 
   return (
     <Router>

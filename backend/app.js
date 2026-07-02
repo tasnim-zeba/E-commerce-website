@@ -24,10 +24,15 @@ app.use(fileUpload());
 const product = require("./routes/productRoute");
 const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute");
+const conversation = require("./routes/conversationRoute");
+const message = require("./routes/messageRoute");
+
 
 app.use("/api/v1", product);
 app.use("/api/v1", user);
 app.use("/api/v1", order);
+app.use("/api/v1", conversation);
+app.use("/api/v1", message);
 
 //Middleware for Errors
 app.use(errorMiddleware)

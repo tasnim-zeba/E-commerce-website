@@ -12,6 +12,9 @@ import SideBar from "./Sidebar";
 import { getAllUsers, clearErrors, deleteUser } from "../../actions/userAction";
 import { DELETE_USER_RESET } from "../../constants/userConstants";
 import { useNavigate } from "react-router-dom";
+import { createConversation } from "../../actions/conversationAction";
+import ChatIcon from "@mui/icons-material/Chat";
+import { CREATE_CONVERSATION_RESET } from "../../constants/conversationConstants";
 
 const UsersList = () => {
   const dispatch = useDispatch();
@@ -26,10 +29,42 @@ const UsersList = () => {
     isDeleted,
     message,
   } = useSelector((state) => state.profile);
+  const { conversation } = useSelector(
+      (state) => state.conversation
+  );
 
   const deleteUserHandler = (id) => {
     dispatch(deleteUser(id));
   };
+
+  const chatHandler = (userId) => {
+
+    dispatch(createConversation(userId));
+
+};
+
+  useEffect(() => {
+
+    if (conversation && conversation._id) {
+
+        navigate(`/chat/${conversation._id}`);
+
+    }
+
+}, [conversation, navigate]);
+    useEffect(() => {
+
+          if (conversation?._id) {
+
+            navigate(`/chat/${conversation._id}`);
+
+            dispatch({
+                type: CREATE_CONVERSATION_RESET,
+            });
+
+        }
+
+        }, [conversation?._id, navigate, dispatch]);
 
   useEffect(() => {
     if (error) {
@@ -79,6 +114,31 @@ const UsersList = () => {
           : "redColor";
       },
     },
+    {
+    field: "chat",
+    headerName: "Chat",
+    minWidth: 100,
+    flex: 0.2,
+    sortable: false,
+
+    renderCell: (params) => {
+
+        if (params.row.role === "admin") {
+            return null;
+        }
+
+        return (
+
+            <Button
+                onClick={() => chatHandler(params.row.id)}
+            >
+                <ChatIcon style={{ color: "tomato" }} />
+            </Button>
+
+        );
+
+    },
+},
 
     {
       field: "actions",
