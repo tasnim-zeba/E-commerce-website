@@ -36,11 +36,16 @@ import UpdateUser from './component/Admin/UpdateUser.js';
 import ProductReviews from './component/Admin/ProductReviews.js';
 import Contact from './component/Contact/Contact.js';
 import Chat from './component/Chat/Chat.js';
+import { getNotifications } from "./actions/notificationAction";
+import { NEW_NOTIFICATION } from "./constants/notificationConstants";
+import { useDispatch } from "react-redux";
+import NotificationBell from "./component/layout/Header/NotificationBell";
 
 
 function App() {
 
   const { isAuthenticated, user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
 
   useEffect(() => {           // ✅ Now inside the component
@@ -56,6 +61,12 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (isAuthenticated) {
+        store.dispatch(getNotifications());
+    }
+}, [isAuthenticated]);
+
+  useEffect(() => {
 
     if (isAuthenticated && user) {
 
@@ -69,11 +80,21 @@ function App() {
 
         });
 
+        socket.on("newNotification", (notification) => {
+
+          dispatch({
+              type: NEW_NOTIFICATION,
+              payload: notification,
+          });
+
+      });
+
     }
 
     return () => {
 
         socket.off("connect");
+        socket.off("newNotification");
         socket.disconnect();
 
     };
@@ -83,6 +104,7 @@ function App() {
   return (
     <Router>
       <Header/>
+      {isAuthenticated && <NotificationBell />}
       {isAuthenticated && <UserOptions user={user} />}
       <Routes>
         <Route exact path="/" element={<Home />} />

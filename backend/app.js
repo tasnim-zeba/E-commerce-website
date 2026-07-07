@@ -26,6 +26,9 @@ const user = require("./routes/userRoute");
 const order = require("./routes/orderRoute");
 const conversation = require("./routes/conversationRoute");
 const message = require("./routes/messageRoute");
+const notification = require("./routes/notificationRoute");
+
+
 
 
 app.use("/api/v1", product);
@@ -33,6 +36,7 @@ app.use("/api/v1", user);
 app.use("/api/v1", order);
 app.use("/api/v1", conversation);
 app.use("/api/v1", message);
+app.use("/api/v1", notification);
 
 //Middleware for Errors
 app.use(errorMiddleware)

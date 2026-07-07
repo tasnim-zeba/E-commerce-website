@@ -3,6 +3,7 @@ const Conversation = require("../models/Conversation");
 const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const { getIO } = require("../socket");
+const Notification = require("../models/notificationModel");
 
 
 
@@ -39,6 +40,13 @@ exports.sendMessage = catchAsyncErrors(async (req, res, next) => {
         message,
     });
 
+    const newNotification = await Notification.create({
+        conversation: conversationId,
+        sender: userId,
+        receiver: receiverId,
+        message,
+    });
+
     // Update conversation
     conversation.lastMessage = message;
     conversation.lastMessageAt = Date.now();
@@ -47,6 +55,7 @@ exports.sendMessage = catchAsyncErrors(async (req, res, next) => {
 
     await newMessage.populate("sender", "name avatar");
     await newMessage.populate("receiver", "name avatar");
+    await newNotification.populate("sender", "name avatar");
 
     const io = getIO();
 
@@ -56,6 +65,7 @@ exports.sendMessage = catchAsyncErrors(async (req, res, next) => {
 
     io.to(receiverId).emit("receiveMessage", newMessage);
     io.to(userId).emit("receiveMessage", newMessage);
+    io.to(receiverId).emit("newNotification", newNotification);
 
 //     console.log("Event emitted");
 // console.log("==========================");

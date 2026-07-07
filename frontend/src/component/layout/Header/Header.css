@@ -9,3 +9,13 @@
   height: 56px;
   border-radius: 100%;
 }
+.notificationBell {
+    position: fixed;
+    top: 0.8vmax;
+    right: 0.8vmax;
+    z-index: 11;
+}
+.notificationIcon {
+    font-size: 38px !important;
+    color: yellow;
+}

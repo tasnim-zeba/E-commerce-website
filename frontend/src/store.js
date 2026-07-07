@@ -32,6 +32,9 @@ import {
     messagesReducer,
     newMessageReducer,
 } from "./reducers/messageReducer";
+import {
+  notificationReducer,
+} from "./reducers/notificationReducer";
 
 
 const reducer = combineReducers({
@@ -59,6 +62,7 @@ const reducer = combineReducers({
   conversationDetails: conversationDetailsReducer,
   messages: messagesReducer,
   newMessage: newMessageReducer,
+  notifications: notificationReducer,
 });
 
 let initialState = {
