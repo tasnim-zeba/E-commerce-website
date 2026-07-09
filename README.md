@@ -1,4 +1,4 @@
-🛒 MERN E-Commerce Website
+### 🛒 MERN E-Commerce Website
 
 A full-stack e-commerce web application built using the MERN stack. The application provides a complete online shopping experience with secure authentication, product management, shopping cart, order processing, payment integration, user reviews, and an admin dashboard.
 
@@ -76,26 +76,38 @@ A full-stack e-commerce web application built using the MERN stack. The applicat
 ### Screenshot
 Home Page
 <img width="932" height="495" alt="image" src="https://github.com/user-attachments/assets/8db56688-86ed-4479-851e-06a796a8466a" />
+
 User Profile
 <img width="712" height="419" alt="image" src="https://github.com/user-attachments/assets/6261425b-b350-4bf5-8fd1-8afe5f53e832" />
+
+
 Products with Filtering Options
 <img width="812" height="314" alt="image" src="https://github.com/user-attachments/assets/51b8fd14-92bd-4adb-bdb3-28613a69b8e4" />
+
 Product Details
 <img width="412" height="402" alt="image" src="https://github.com/user-attachments/assets/1136a3b1-486d-4cbd-920b-f7f47cc19486" />
+
 Shopping Cart
 <img width="794" height="390" alt="image" src="https://github.com/user-attachments/assets/8ac74f1d-69f3-454d-98f3-1f996b3c93c6" />
+
 Shipping Details
 <img width="583" height="446" alt="image" src="https://github.com/user-attachments/assets/d3404ac9-4f67-4379-9781-feafb1c801d3" />
+
 Order page
 <img width="901" height="446" alt="image" src="https://github.com/user-attachments/assets/95a7e0d8-94f0-4676-bcfa-a3cccaf7aeb2" />
+
 Contact page
 <img width="788" height="445" alt="image" src="https://github.com/user-attachments/assets/41f0c23d-adcd-4693-9c2f-3997e70f3cc4" />
+
 Real Time Chat
 <img width="633" height="413" alt="image" src="https://github.com/user-attachments/assets/fd108d38-2b81-4af6-be34-d1605fe66045" />
+
 Real Time Notification
 <img width="219" height="221" alt="image" src="https://github.com/user-attachments/assets/b075282e-122c-4c37-b22f-b9a416dccd27" />
+
 Admin Dashboard
 <img width="587" height="472" alt="image" src="https://github.com/user-attachments/assets/02c00989-0ea4-4177-8c02-b68889ac6f7e" />
+
 Create Product
 <img width="365" height="437" alt="image" src="https://github.com/user-attachments/assets/5f9182be-8a74-400c-bfcd-d75b83cd2b86" />
 
