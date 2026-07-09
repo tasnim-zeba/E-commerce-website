@@ -1,4 +1,4 @@
-<img width="404" height="249" alt="image" src="https://github.com/user-attachments/assets/fb9d4953-abbc-4944-94be-d958f20cafc0" /># 🛒 MERN E-Commerce Website
+🛒 MERN E-Commerce Website
 
 A full-stack e-commerce web application built using the MERN stack. The application provides a complete online shopping experience with secure authentication, product management, shopping cart, order processing, payment integration, user reviews, and an admin dashboard.
 
