@@ -250,6 +250,8 @@ CLOUDINARY_API_SECRET =
 * Product Comparison
 * Advanced Analytics
 * AI-based Product Recommendation
+* Optimize rendering(useMemo)
+* Add a payment gateway
 
 ---
 
